@@ -4,10 +4,11 @@ import { WIKIPEDIA_BASE_API_URL } from '../../constants/config'
 
 const Search = () => {
     const [term, setTerm] = useState('');
-
+    const [results, setResults] = useState([]);
+    
     useEffect(() => {
         const search = async () => {
-            await axios.get(WIKIPEDIA_BASE_API_URL, {
+            const { data } = await axios.get(WIKIPEDIA_BASE_API_URL, {
                 params: {
                     action: 'query',
                     list: 'search',
@@ -16,8 +17,10 @@ const Search = () => {
                     srsearch: term
                 }
             });
+
+            setResults(data.query.search)
         };
-        search();
+        if (term) search();
     }, [term]);
     return (
         <div>

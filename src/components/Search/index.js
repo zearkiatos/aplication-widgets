@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Search = () => {
     const [term, setTerm] = useState('');
 
-    console.log('I run with every render');
-
     useEffect(() => {
-        console.log('I only after every render and at initial render');
+        const search = async () => {
+            await axios.get('');
+        };
+        search();
     }, [term]);
     return (
         <div>
@@ -17,7 +19,7 @@ const Search = () => {
                         type="text"
                         value={term}
                         onChange={e => setTerm(e.target.value)}
-                        className="input" 
+                        className="input"
                     />
                 </div>
             </div>

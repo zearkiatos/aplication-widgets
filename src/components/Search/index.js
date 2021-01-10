@@ -5,7 +5,7 @@ import { WIKIPEDIA_BASE_API_URL } from '../../constants/config'
 const Search = () => {
     const [term, setTerm] = useState('');
     const [results, setResults] = useState([]);
-    
+
     useEffect(() => {
         const search = async () => {
             const { data } = await axios.get(WIKIPEDIA_BASE_API_URL, {
@@ -22,6 +22,17 @@ const Search = () => {
         };
         if (term) search();
     }, [term]);
+    const renderResults = results.map((result) => {
+        return (
+            <div key={result.pageid} className="item">
+                <div className="content">
+                    <div className="header">
+                        {result.title}
+                    </div>
+                    {result.snippet}
+                </div>
+            </div>);
+    });
     return (
         <div>
             <div className="ui form">
@@ -34,6 +45,9 @@ const Search = () => {
                         className="input"
                     />
                 </div>
+            </div>
+            <div className="ui celled list">
+                {renderResults}
             </div>
         </div>
     );

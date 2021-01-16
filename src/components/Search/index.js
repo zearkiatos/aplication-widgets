@@ -23,6 +23,10 @@ const Search = () => {
         const timeoutId = setTimeout(() => {
             if (term) search();
         }, TIMEOUT_FOR_SEARCH);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
     }, [term]);
     const renderResults = results.map((result) => {
         return (

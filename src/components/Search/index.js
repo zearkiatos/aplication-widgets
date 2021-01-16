@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { WIKIPEDIA_BASE_API_URL } from '../../constants/config'
+import { WIKIPEDIA_BASE_URL, WIKIPEDIA_BASE_API_URL } from '../../constants/config'
 
 const Search = () => {
     const [term, setTerm] = useState('');
@@ -25,11 +25,16 @@ const Search = () => {
     const renderResults = results.map((result) => {
         return (
             <div key={result.pageid} className="item">
+                <div className="right floated content">
+                    <a href={`${WIKIPEDIA_BASE_URL}?curid=${result.pageid}`} className="ui button">
+                        Go
+                    </a>
+                </div>
                 <div className="content">
                     <div className="header">
                         {result.title}
                     </div>
-                    <span dangerouslySetInnerHtml={{ __html: result.snippet }}>
+                    <span dangerouslySetInnerHTML={{ __html: result.snippet }}>
                     </span>
                 </div>
             </div>);

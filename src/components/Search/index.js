@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { WIKIPEDIA_BASE_URL, WIKIPEDIA_BASE_API_URL } from '../../constants/config'
+import { WIKIPEDIA_BASE_URL, WIKIPEDIA_BASE_API_URL, TIMEOUT_FOR_SEARCH } from '../../constants/config'
 
 const Search = () => {
     const [term, setTerm] = useState('');
@@ -20,7 +20,9 @@ const Search = () => {
 
             setResults(data.query.search)
         };
-        if (term) search();
+        const timeoutId = setTimeout(() => {
+            if (term) search();
+        }, TIMEOUT_FOR_SEARCH);
     }, [term]);
     const renderResults = results.map((result) => {
         return (

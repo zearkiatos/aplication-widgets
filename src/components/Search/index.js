@@ -3,8 +3,19 @@ import axios from 'axios';
 import { WIKIPEDIA_BASE_URL, WIKIPEDIA_BASE_API_URL, TIMEOUT_FOR_SEARCH } from '../../constants/config'
 
 const Search = () => {
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState('programming');
+    const [debouncedTerm, setDebouncedTerm] = useState(term);
     const [results, setResults] = useState([]);
+
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            setDebouncedTerm(term);
+        }, TIMEOUT_FOR_SEARCH);
+
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, [term]);
 
     useEffect(() => {
         const search = async () => {
@@ -14,25 +25,15 @@ const Search = () => {
                     list: 'search',
                     origin: '*',
                     format: 'json',
-                    srsearch: term
+                    srsearch: debouncedTerm
                 }
             });
 
             setResults(data.query.search)
         };
-        if (term && !results.length) {
-            search();
-        }
-        else {
-            const timeoutId = setTimeout(() => {
-                if (term) search();
-            }, TIMEOUT_FOR_SEARCH);
+        search();
+    }, [debouncedTerm]);
 
-            return () => {
-                clearTimeout(timeoutId);
-            };
-        }
-    }, [term]);
     const renderResults = results.map((result) => {
         return (
             <div key={result.pageid} className="item">
